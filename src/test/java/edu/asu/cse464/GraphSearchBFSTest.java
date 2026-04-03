@@ -13,7 +13,7 @@ public class GraphSearchBFSTest {
         graph.addEdge("b", "c");
         graph.addEdge("c", "d");
 
-        Path path = graph.GraphSearch(new Node("a"), new Node("d"));
+        Path path = graph.GraphSearch(new Node("a"), new Node("d"), Algorithm.BFS);
 
         assertNotNull(path);
         assertEquals("a -> b -> c -> d", path.toString());
@@ -25,7 +25,7 @@ public class GraphSearchBFSTest {
         graph.addEdge("a", "b");
         graph.addEdge("c", "d");
 
-        Path path = graph.GraphSearch(new Node("a"), new Node("d"));
+        Path path = graph.GraphSearch(new Node("a"), new Node("d"), Algorithm.BFS);
 
         assertNull(path);
     }
@@ -35,7 +35,7 @@ public class GraphSearchBFSTest {
         Graph graph = new Graph();
         graph.addNode("a");
 
-        Path path = graph.GraphSearch(new Node("a"), new Node("a"));
+        Path path = graph.GraphSearch(new Node("a"), new Node("a"), Algorithm.BFS);
 
         assertNotNull(path);
         assertEquals("a", path.toString());
