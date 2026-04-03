@@ -1,6 +1,7 @@
 package edu.asu.cse464;
 
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class Graph {
     private final Set<String> nodes;
@@ -41,124 +42,6 @@ public class Graph {
 
         Edge edge = new Edge(srcLabel, dstLabel);
         return edges.add(edge);
-    }
-
-    public boolean removeNode(String label) {
-        if (label == null) {
-            throw new IllegalArgumentException("Node label cannot be null.");
-        }
-
-        String trimmedLabel = label.trim();
-
-        if (trimmedLabel.isEmpty()) {
-            throw new IllegalArgumentException("Node label cannot be empty.");
-        }
-
-        if (!nodes.contains(trimmedLabel)) {
-            throw new IllegalArgumentException("Node does not exist: " + trimmedLabel);
-        }
-
-        edges.removeIf(edge ->
-                edge.getSrc().equals(trimmedLabel) || edge.getDst().equals(trimmedLabel));
-
-        return nodes.remove(trimmedLabel);
-    }
-
-    public void removeNodes(String[] labels) {
-        if (labels == null) {
-            throw new IllegalArgumentException("Node label array cannot be null.");
-        }
-
-        List<String> trimmedLabels = new ArrayList<>();
-
-        for (String label : labels) {
-            if (label == null) {
-                throw new IllegalArgumentException("Node label cannot be null.");
-            }
-
-            String trimmedLabel = label.trim();
-
-            if (trimmedLabel.isEmpty()) {
-                throw new IllegalArgumentException("Node label cannot be empty.");
-            }
-
-            if (!nodes.contains(trimmedLabel)) {
-                throw new IllegalArgumentException("Node does not exist: " + trimmedLabel);
-            }
-
-            trimmedLabels.add(trimmedLabel);
-        }
-
-        for (String trimmedLabel : trimmedLabels) {
-            removeNode(trimmedLabel);
-        }
-    }
-
-    public boolean removeEdge(String srcLabel, String dstLabel) {
-        if (srcLabel == null || dstLabel == null) {
-            throw new IllegalArgumentException("Source and destination cannot be null.");
-        }
-
-        String trimmedSrc = srcLabel.trim();
-        String trimmedDst = dstLabel.trim();
-
-        if (trimmedSrc.isEmpty() || trimmedDst.isEmpty()) {
-            throw new IllegalArgumentException("Source and destination cannot be empty.");
-        }
-
-        if (!nodes.contains(trimmedSrc)) {
-            throw new IllegalArgumentException("Source node does not exist: " + trimmedSrc);
-        }
-
-        if (!nodes.contains(trimmedDst)) {
-            throw new IllegalArgumentException("Destination node does not exist: " + trimmedDst);
-        }
-
-        Edge edge = new Edge(trimmedSrc, trimmedDst);
-
-        if (!edges.contains(edge)) {
-            throw new IllegalArgumentException("Edge does not exist: " + edge);
-        }
-
-        return edges.remove(edge);
-    }
-
-    public boolean containsNode(String label) {
-        if (label == null) {
-            return false;
-        }
-
-        return nodes.contains(label.trim());
-    }
-
-    public boolean containsEdge(String srcLabel, String dstLabel) {
-        if (srcLabel == null || dstLabel == null) {
-            return false;
-        }
-
-        return edges.contains(new Edge(srcLabel.trim(), dstLabel.trim()));
-    }
-
-    public Set<String> getNeighbors(String label) {
-        if (label == null) {
-            throw new IllegalArgumentException("Node label cannot be null.");
-        }
-
-        String trimmedLabel = label.trim();
-
-        if (!nodes.contains(trimmedLabel)) {
-            throw new IllegalArgumentException("Node does not exist: " + trimmedLabel);
-        }
-
-        Set<String> neighbors = new LinkedHashSet<>();
-
-        for (Edge edge : edges) {
-            if (edge.getSrc().equals(trimmedLabel)) {
-                neighbors.add(edge.getDst());
-            }
-        }
-
-        return neighbors;
     }
 
     public Set<String> getNodes() {
