@@ -192,4 +192,48 @@ public class Graph {
 
         return sb.toString();
     }
+
+    public Path GraphSearch(Node src, Node dst) {
+        if (src == null || dst == null) {
+            throw new IllegalArgumentException("Source and destination nodes cannot be null.");
+        }
+
+        String srcLabel = src.getLabel();
+        String dstLabel = dst.getLabel();
+
+        if (!containsNode(srcLabel) || !containsNode(dstLabel)) {
+            return null;
+        }
+
+        Set<String> visited = new HashSet<>();
+        List<Node> currentPath = new ArrayList<>();
+
+        boolean found = dfsHelper(srcLabel, dstLabel, visited, currentPath);
+
+        if (!found) {
+            return null;
+        }
+
+        return new Path(currentPath);
+    }
+
+    private boolean dfsHelper(String current, String destination, Set<String> visited, List<Node> path) {
+        visited.add(current);
+        path.add(new Node(current));
+
+        if (current.equals(destination)) {
+            return true;
+        }
+
+        for (String neighbor : getNeighbors(current)) {
+            if (!visited.contains(neighbor)) {
+                if (dfsHelper(neighbor, destination, visited, path)) {
+                    return true;
+                }
+            }
+        }
+
+        path.remove(path.size() - 1);
+        return false;
+    }
 }
