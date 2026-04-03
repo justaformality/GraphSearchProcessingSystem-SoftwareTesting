@@ -192,4 +192,67 @@ public class Graph {
 
         return sb.toString();
     }
+
+    public Path GraphSearch(Node src, Node dst) {
+        if (src == null || dst == null) {
+            throw new IllegalArgumentException("Source and destination nodes cannot be null.");
+        }
+
+        String srcLabel = src.getLabel();
+        String dstLabel = dst.getLabel();
+
+        if (!containsNode(srcLabel) || !containsNode(dstLabel)) {
+            return null;
+        }
+
+        if (srcLabel.equals(dstLabel)) {
+            return new Path(List.of(new Node(srcLabel)));
+        }
+
+        Queue<String> queue = new LinkedList<>();
+        Set<String> visited = new HashSet<>();
+        Map<String, String> parent = new HashMap<>();
+
+        queue.offer(srcLabel);
+        visited.add(srcLabel);
+
+        while (!queue.isEmpty()) {
+            String current = queue.poll();
+
+            for (String neighbor : getNeighbors(current)) {
+                if (!visited.contains(neighbor)) {
+                    visited.add(neighbor);
+                    parent.put(neighbor, current);
+                    queue.offer(neighbor);
+
+                    if (neighbor.equals(dstLabel)) {
+                        return buildPath(srcLabel, dstLabel, parent);
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private Path buildPath(String srcLabel, String dstLabel, Map<String, String> parent) {
+        List<Node> pathNodes = new ArrayList<>();
+        String current = dstLabel;
+
+        while (current != null) {
+            pathNodes.add(new Node(current));
+            if (current.equals(srcLabel)) {
+                break;
+            }
+            current = parent.get(current);
+        }
+
+        Collections.reverse(pathNodes);
+
+        if (!pathNodes.get(0).getLabel().equals(srcLabel)) {
+            return null;
+        }
+
+        return new Path(pathNodes);
+    }
 }
