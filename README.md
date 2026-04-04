@@ -146,5 +146,30 @@ GraphFileManagerTest.java
 Run tests using:
 **mvn test**
 
-<img width="1440" height="900" alt="Screenshot 2026-03-06 at 10 54 30 PM" src="https://github.com/user-attachments/assets/d47c0418-a705-4a25-b7bb-f6259d0ea1e0" />
+
+<img width="1256" height="828" alt="Screenshot 2026-04-03 at 5 10 39 PM" src="https://github.com/user-attachments/assets/8a17dfb0-4233-4dd2-b714-2e334d1af6de" />
+
+**PROJECT PART 2**
+This phase extends the graph system with additional functionality:
+
+Feature 5 – Remove nodes and edges  
+Feature 6 – Graph search using BFS  
+Feature 7 – Graph search using DFS  
+Feature 8 – Merge conflict resolution using Algorithm enum  
+Feature 9 – Continuous Integration using GitHub Actions  
+
+All features are tested using JUnit and integrated into a CI workflow.
+
+**MAIN PROGRAM OUTPUT**
+The Main.java class has been updated to demonstrate all features from Project Part 1 and Project Part 2.
+
+Please run the project using:
+**mvn test**
+**mvn package**
+**java -cp target/CSE4642026-arajeshn-1.0-SNAPSHOT.jar edu.asu.cse464.Main**
+
+Output Screenshots:
+<img width="1132" height="749" alt="Screenshot 2026-04-03 at 5 09 37 PM" src="https://github.com/user-attachments/assets/9ea3f9ac-87eb-4763-94c6-8f91435f018a" />
+<img width="672" height="420" alt="Screenshot 2026-04-03 at 5 10 00 PM" src="https://github.com/user-attachments/assets/4526f29b-3b26-4673-81c0-c6aeedc90f6a" />
+
 
