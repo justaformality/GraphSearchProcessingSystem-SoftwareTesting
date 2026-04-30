@@ -221,7 +221,7 @@ public class Graph {
         }
 
         if (srcLabel.equals(dstLabel)) {
-            return new Path(List.of(new Node(srcLabel)));
+            return createSingleNodePath(srcLabel);
         }
 
         Queue<String> queue = new LinkedList<>();
@@ -256,6 +256,9 @@ public class Graph {
 
         if (!containsNode(srcLabel) || !containsNode(dstLabel)) {
             return null;
+        }
+        if (srcLabel.equals(dstLabel)) {
+            return createSingleNodePath(srcLabel);
         }
 
         Set<String> visited = new HashSet<>();
@@ -309,6 +312,10 @@ public class Graph {
         }
 
         return new Path(pathNodes);
+    }
+
+    private Path createSingleNodePath(String label) {
+        return new Path(List.of(new Node(label)));
     }
 
 }
