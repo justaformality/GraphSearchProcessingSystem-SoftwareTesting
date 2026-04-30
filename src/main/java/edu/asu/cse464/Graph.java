@@ -11,7 +11,7 @@ public class Graph {
         this.edges = new LinkedHashSet<>();
     }
 
-    public boolean addNode(String label) {
+    private String normalizeNodeLabel(String label) {
         if (label == null) {
             throw new IllegalArgumentException("Node label cannot be null.");
         }
@@ -22,6 +22,11 @@ public class Graph {
             throw new IllegalArgumentException("Node label cannot be empty.");
         }
 
+        return trimmedLabel;
+    }
+
+    public boolean addNode(String label) {
+        String trimmedLabel = normalizeNodeLabel(label);
         return nodes.add(trimmedLabel);
     }
 
@@ -44,15 +49,7 @@ public class Graph {
     }
 
     public boolean removeNode(String label) {
-        if (label == null) {
-            throw new IllegalArgumentException("Node label cannot be null.");
-        }
-
-        String trimmedLabel = label.trim();
-
-        if (trimmedLabel.isEmpty()) {
-            throw new IllegalArgumentException("Node label cannot be empty.");
-        }
+        String trimmedLabel = normalizeNodeLabel(label);
 
         if (!nodes.contains(trimmedLabel)) {
             throw new IllegalArgumentException("Node does not exist: " + trimmedLabel);
@@ -72,15 +69,7 @@ public class Graph {
         List<String> trimmedLabels = new ArrayList<>();
 
         for (String label : labels) {
-            if (label == null) {
-                throw new IllegalArgumentException("Node label cannot be null.");
-            }
-
-            String trimmedLabel = label.trim();
-
-            if (trimmedLabel.isEmpty()) {
-                throw new IllegalArgumentException("Node label cannot be empty.");
-            }
+            String trimmedLabel = normalizeNodeLabel(label);
 
             if (!nodes.contains(trimmedLabel)) {
                 throw new IllegalArgumentException("Node does not exist: " + trimmedLabel);
