@@ -39,6 +39,12 @@ public class Graph {
         return trimmedLabel;
     }
 
+    private void requireNodeExists(String label) {
+        if (!nodes.contains(label)) {
+            throw new IllegalArgumentException("Node does not exist: " + label);
+        }
+    }
+
     public boolean addNode(String label) {
         String trimmedLabel = normalizeNodeLabel(label);
         return nodes.add(trimmedLabel);
@@ -65,9 +71,7 @@ public class Graph {
     public boolean removeNode(String label) {
         String trimmedLabel = normalizeNodeLabel(label);
 
-        if (!nodes.contains(trimmedLabel)) {
-            throw new IllegalArgumentException("Node does not exist: " + trimmedLabel);
-        }
+        requireNodeExists(trimmedLabel);
 
         edges.removeIf(edge ->
                 edge.getSrc().equals(trimmedLabel) || edge.getDst().equals(trimmedLabel));
@@ -141,9 +145,7 @@ public class Graph {
 
         String trimmedLabel = label.trim();
 
-        if (!nodes.contains(trimmedLabel)) {
-            throw new IllegalArgumentException("Node does not exist: " + trimmedLabel);
-        }
+        requireNodeExists(trimmedLabel);
 
         Set<String> neighbors = new LinkedHashSet<>();
 
