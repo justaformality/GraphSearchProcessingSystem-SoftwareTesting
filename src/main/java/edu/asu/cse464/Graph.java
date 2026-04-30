@@ -45,6 +45,16 @@ public class Graph {
         }
     }
 
+    private void validateGraphSearchInput(Node src, Node dst, Algorithm algo) {
+        if (src == null || dst == null) {
+            throw new IllegalArgumentException("Source and destination nodes cannot be null.");
+        }
+
+        if (algo == null) {
+            throw new IllegalArgumentException("Algorithm cannot be null.");
+        }
+    }
+
     public boolean addNode(String label) {
         String trimmedLabel = normalizeNodeLabel(label);
         return nodes.add(trimmedLabel);
@@ -191,13 +201,7 @@ public class Graph {
     }
 
     public Path GraphSearch(Node src, Node dst, Algorithm algo) {
-        if (src == null || dst == null) {
-            throw new IllegalArgumentException("Source and destination nodes cannot be null.");
-        }
-
-        if (algo == null) {
-            throw new IllegalArgumentException("Algorithm cannot be null.");
-        }
+        validateGraphSearchInput(src, dst, algo);
 
         switch (algo) {
             case BFS:
