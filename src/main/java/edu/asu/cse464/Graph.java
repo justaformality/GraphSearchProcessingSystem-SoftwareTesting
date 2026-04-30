@@ -25,6 +25,20 @@ public class Graph {
         return trimmedLabel;
     }
 
+    private String normalizeEndpointLabel(String label, String endpointName) {
+        if (label == null) {
+            throw new IllegalArgumentException(endpointName + " cannot be null.");
+        }
+
+        String trimmedLabel = label.trim();
+
+        if (trimmedLabel.isEmpty()) {
+            throw new IllegalArgumentException(endpointName + " cannot be empty.");
+        }
+
+        return trimmedLabel;
+    }
+
     public boolean addNode(String label) {
         String trimmedLabel = normalizeNodeLabel(label);
         return nodes.add(trimmedLabel);
@@ -84,16 +98,8 @@ public class Graph {
     }
 
     public boolean removeEdge(String srcLabel, String dstLabel) {
-        if (srcLabel == null || dstLabel == null) {
-            throw new IllegalArgumentException("Source and destination cannot be null.");
-        }
-
-        String trimmedSrc = srcLabel.trim();
-        String trimmedDst = dstLabel.trim();
-
-        if (trimmedSrc.isEmpty() || trimmedDst.isEmpty()) {
-            throw new IllegalArgumentException("Source and destination cannot be empty.");
-        }
+        String trimmedSrc = normalizeEndpointLabel(srcLabel, "Source");
+        String trimmedDst = normalizeEndpointLabel(dstLabel, "Destination");
 
         if (!nodes.contains(trimmedSrc)) {
             throw new IllegalArgumentException("Source node does not exist: " + trimmedSrc);
