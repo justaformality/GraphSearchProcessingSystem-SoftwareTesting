@@ -202,14 +202,9 @@ public class Graph {
     public Path GraphSearch(Node src, Node dst, Algorithm algo) {
         validateGraphSearchInput(src, dst, algo);
 
-        switch (algo) {
-            case BFS:
-                return new BFS().search(this, src, dst);
-            case DFS:
-                return new DFS().search(this, src, dst);
-            default:
-                throw new IllegalArgumentException("Unsupported algorithm: " + algo);
-        }
+        GraphSearchStrategy strategy = GraphSearchStrategyFactory.createStrategy(algo);
+
+        return strategy.search(this, src, dst);
     }
 
 }
