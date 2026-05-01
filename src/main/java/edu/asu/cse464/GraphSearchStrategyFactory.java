@@ -12,6 +12,9 @@ public class GraphSearchStrategyFactory {
             case DFS:
                 return new DFS();
 
+            case RANDOM_WALK:
+                return new RandomWalk();
+
             default:
                 throw new IllegalArgumentException("Unsupported algorithm: " + algo);
         }

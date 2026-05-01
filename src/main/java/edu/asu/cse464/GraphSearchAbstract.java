@@ -15,7 +15,9 @@ public abstract class GraphSearchAbstract implements GraphSearchStrategy {
             return null;
         }
         if(srcLabel.equals(dstLabel)){
-            return new Path(List.of(new Node(srcLabel)));
+            Path startPath = new Path(List.of(new Node(srcLabel)));
+            printVisit(startPath);
+            return startPath;
         }
         Set<String> visited = new HashSet<>();
         Path startPath = new Path(List.of(new Node(srcLabel)));
@@ -25,15 +27,20 @@ public abstract class GraphSearchAbstract implements GraphSearchStrategy {
 
         while(hasMorePaths()){
             Path currentPath = getNextPath();
-            String currentLabel = getLastNodeLabel(currentPath);
+            printVisit(currentPath);
 
-            for(String neighbor : graph.getNeighbors(currentLabel)){
+            String currentLabel = getLastNodeLabel(currentPath);
+            List<String> neighbors = chooseNextNodes(graph, currentLabel, visited);
+
+            for(String neighbor : neighbors){
                 if(!visited.contains(neighbor)){
                     visited.add(neighbor);
 
                     Path newPath = extendPath(currentPath, neighbor);
 
                     if(neighbor.equals(dstLabel)){
+                        printVisit(newPath);
+                        System.out.println("Found target node: " + dstLabel);
                         return newPath;
                     }
                     addPath(newPath);
@@ -56,5 +63,24 @@ public abstract class GraphSearchAbstract implements GraphSearchStrategy {
         List<Node> newNodes = new ArrayList<>(currentPath.getNodes());
         newNodes.add(new Node(nextLabel));
         return new Path(newNodes);
+    }
+
+    protected List<String> chooseNextNodes(Graph graph, String currentLabel, Set<String> visited){
+        List<String> neighbors = new ArrayList<>();
+
+        for(String neighbor : graph.getNeighbors(currentLabel)){
+            if(!visited.contains(neighbor)){
+                neighbors.add(neighbor);
+            }
+        }
+        return neighbors;
+    }
+
+    private void printVisit(Path path){
+        String history = path.getNodes().stream()
+                .map(Node::getLabel)
+                .collect(java.util.stream.Collectors.joining("-"));
+
+        System.out.println("Visit Node History: " + history);
     }
 }
