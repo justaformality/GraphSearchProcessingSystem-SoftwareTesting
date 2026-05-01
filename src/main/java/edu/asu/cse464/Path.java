@@ -26,4 +26,10 @@ public class Path {
                 .map(Node::toString)
                 .collect(Collectors.joining(" -> "));
     }
+
+    public String toDetailedString(){
+        return "Path{nodes=" + nodes.stream()
+                .map(node -> "Node{" + node.getLabel() + "}")
+                .collect(Collectors.joining(",", "[","]")) + "}";
+    }
 }

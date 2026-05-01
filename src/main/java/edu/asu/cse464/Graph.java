@@ -11,7 +11,7 @@ public class Graph {
         this.edges = new LinkedHashSet<>();
     }
 
-    public boolean addNode(String label) {
+    private String normalizeNodeLabel(String label) {
         if (label == null) {
             throw new IllegalArgumentException("Node label cannot be null.");
         }
@@ -22,6 +22,41 @@ public class Graph {
             throw new IllegalArgumentException("Node label cannot be empty.");
         }
 
+        return trimmedLabel;
+    }
+
+    private String normalizeEndpointLabel(String label, String endpointName) {
+        if (label == null) {
+            throw new IllegalArgumentException(endpointName + " cannot be null.");
+        }
+
+        String trimmedLabel = label.trim();
+
+        if (trimmedLabel.isEmpty()) {
+            throw new IllegalArgumentException(endpointName + " cannot be empty.");
+        }
+
+        return trimmedLabel;
+    }
+
+    private void requireNodeExists(String label) {
+        if (!nodes.contains(label)) {
+            throw new IllegalArgumentException("Node does not exist: " + label);
+        }
+    }
+
+    private void validateGraphSearchInput(Node src, Node dst, Algorithm algo) {
+        if (src == null || dst == null) {
+            throw new IllegalArgumentException("Source and destination nodes cannot be null.");
+        }
+
+        if (algo == null) {
+            throw new IllegalArgumentException("Algorithm cannot be null.");
+        }
+    }
+
+    public boolean addNode(String label) {
+        String trimmedLabel = normalizeNodeLabel(label);
         return nodes.add(trimmedLabel);
     }
 
@@ -44,19 +79,9 @@ public class Graph {
     }
 
     public boolean removeNode(String label) {
-        if (label == null) {
-            throw new IllegalArgumentException("Node label cannot be null.");
-        }
+        String trimmedLabel = normalizeNodeLabel(label);
 
-        String trimmedLabel = label.trim();
-
-        if (trimmedLabel.isEmpty()) {
-            throw new IllegalArgumentException("Node label cannot be empty.");
-        }
-
-        if (!nodes.contains(trimmedLabel)) {
-            throw new IllegalArgumentException("Node does not exist: " + trimmedLabel);
-        }
+        requireNodeExists(trimmedLabel);
 
         edges.removeIf(edge ->
                 edge.getSrc().equals(trimmedLabel) || edge.getDst().equals(trimmedLabel));
@@ -72,15 +97,7 @@ public class Graph {
         List<String> trimmedLabels = new ArrayList<>();
 
         for (String label : labels) {
-            if (label == null) {
-                throw new IllegalArgumentException("Node label cannot be null.");
-            }
-
-            String trimmedLabel = label.trim();
-
-            if (trimmedLabel.isEmpty()) {
-                throw new IllegalArgumentException("Node label cannot be empty.");
-            }
+            String trimmedLabel = normalizeNodeLabel(label);
 
             if (!nodes.contains(trimmedLabel)) {
                 throw new IllegalArgumentException("Node does not exist: " + trimmedLabel);
@@ -95,16 +112,8 @@ public class Graph {
     }
 
     public boolean removeEdge(String srcLabel, String dstLabel) {
-        if (srcLabel == null || dstLabel == null) {
-            throw new IllegalArgumentException("Source and destination cannot be null.");
-        }
-
-        String trimmedSrc = srcLabel.trim();
-        String trimmedDst = dstLabel.trim();
-
-        if (trimmedSrc.isEmpty() || trimmedDst.isEmpty()) {
-            throw new IllegalArgumentException("Source and destination cannot be empty.");
-        }
+        String trimmedSrc = normalizeEndpointLabel(srcLabel, "Source");
+        String trimmedDst = normalizeEndpointLabel(dstLabel, "Destination");
 
         if (!nodes.contains(trimmedSrc)) {
             throw new IllegalArgumentException("Source node does not exist: " + trimmedSrc);
@@ -135,7 +144,6 @@ public class Graph {
         if (srcLabel == null || dstLabel == null) {
             return false;
         }
-
         return edges.contains(new Edge(srcLabel.trim(), dstLabel.trim()));
     }
 
@@ -146,9 +154,7 @@ public class Graph {
 
         String trimmedLabel = label.trim();
 
-        if (!nodes.contains(trimmedLabel)) {
-            throw new IllegalArgumentException("Node does not exist: " + trimmedLabel);
-        }
+        requireNodeExists(trimmedLabel);
 
         Set<String> neighbors = new LinkedHashSet<>();
 
@@ -194,120 +200,11 @@ public class Graph {
     }
 
     public Path GraphSearch(Node src, Node dst, Algorithm algo) {
-        if (src == null || dst == null) {
-            throw new IllegalArgumentException("Source and destination nodes cannot be null.");
-        }
+        validateGraphSearchInput(src, dst, algo);
 
-        if (algo == null) {
-            throw new IllegalArgumentException("Algorithm cannot be null.");
-        }
+        GraphSearchStrategy strategy = GraphSearchStrategyFactory.createStrategy(algo);
 
-        switch (algo) {
-            case BFS:
-                return graphSearchBFS(src, dst);
-            case DFS:
-                return graphSearchDFS(src, dst);
-            default:
-                throw new IllegalArgumentException("Unsupported algorithm: " + algo);
-        }
-    }
-    private Path graphSearchBFS(Node src, Node dst) {
-        String srcLabel = src.getLabel();
-        String dstLabel = dst.getLabel();
-
-        if (!containsNode(srcLabel) || !containsNode(dstLabel)) {
-            return null;
-        }
-
-        if (srcLabel.equals(dstLabel)) {
-            return new Path(List.of(new Node(srcLabel)));
-        }
-
-        Queue<String> queue = new LinkedList<>();
-        Set<String> visited = new HashSet<>();
-        Map<String, String> parent = new HashMap<>();
-
-        queue.offer(srcLabel);
-        visited.add(srcLabel);
-
-        while (!queue.isEmpty()) {
-            String current = queue.poll();
-
-            for (String neighbor : getNeighbors(current)) {
-                if (!visited.contains(neighbor)) {
-                    visited.add(neighbor);
-                    parent.put(neighbor, current);
-                    queue.offer(neighbor);
-
-                    if (neighbor.equals(dstLabel)) {
-                        return buildPath(srcLabel, dstLabel, parent);
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-    private Path graphSearchDFS(Node src, Node dst) {
-        String srcLabel = src.getLabel();
-        String dstLabel = dst.getLabel();
-
-        if (!containsNode(srcLabel) || !containsNode(dstLabel)) {
-            return null;
-        }
-
-        Set<String> visited = new HashSet<>();
-        List<Node> currentPath = new ArrayList<>();
-
-        boolean found = dfsHelper(srcLabel, dstLabel, visited, currentPath);
-
-        if (!found) {
-            return null;
-        }
-
-        return new Path(currentPath);
-    }
-
-    private boolean dfsHelper(String current, String destination, Set<String> visited, List<Node> path) {
-        visited.add(current);
-        path.add(new Node(current));
-
-        if (current.equals(destination)) {
-            return true;
-        }
-
-        for (String neighbor : getNeighbors(current)) {
-            if (!visited.contains(neighbor)) {
-                if (dfsHelper(neighbor, destination, visited, path)) {
-                    return true;
-                }
-            }
-        }
-
-        path.remove(path.size() - 1);
-        return false;
-    }
-
-    private Path buildPath(String srcLabel, String dstLabel, Map<String, String> parent) {
-        List<Node> pathNodes = new ArrayList<>();
-        String current = dstLabel;
-
-        while (current != null) {
-            pathNodes.add(new Node(current));
-            if (current.equals(srcLabel)) {
-                break;
-            }
-            current = parent.get(current);
-        }
-
-        Collections.reverse(pathNodes);
-
-        if (!pathNodes.get(0).getLabel().equals(srcLabel)) {
-            return null;
-        }
-
-        return new Path(pathNodes);
+        return strategy.search(this, src, dst);
     }
 
 }
