@@ -1,0 +1,309 @@
+CSE 464 – Course Project Part 3
+Refactoring, Design Patterns, and Random Walk Search
+
+Name: Arshia Rajeshnarayanan
+Course: CSE 464 – Software QA and Testing
+Semester: Spring 2026
+Project: Course Project Part 3
+Github Repository
+
+Repository Link:
+https://github.com/justaformality/CSE4642026-arajeshn.git
+
+Refactor Branch Link:
+https://github.com/justaformality/CSE4642026-arajeshn/tree/refactor
+
+Pull Request Link:
+https://github.com/justaformality/CSE4642026-arajeshn/pull/1
+
+Project Overview
+
+This project extends the graph search implementation from previous project parts by applying software refactoring techniques and design patterns.
+
+The project includes:
+
+5 code refactorings
+Template Method Design Pattern
+Strategy Design Pattern
+Random Walk Search Algorithm
+Pull Request Review Process
+Continuous Integration Testing
+
+The project supports the following graph search algorithms:
+
+Breadth First Search (BFS)
+Depth First Search (DFS)
+Random Walk Search
+Refactoring Changes
+
+The following refactorings were applied to improve readability, maintainability, and code reuse.
+
+Refactoring 1 – Extract Method
+Description
+
+Repeated code logic was extracted into reusable helper methods to reduce duplication.
+
+Why This Refactoring Was Applied
+
+This improves readability and makes the code easier to maintain.
+
+Commit Link
+
+https://github.com/justaformality/CSE4642026-arajeshn/commit/0fa771ab0635cee8e9d3c17b544b947a926620dd
+
+Refactoring 2 – Rename Method / Variables
+Description
+
+Methods and variable names were renamed to more meaningful names.
+
+Why This Refactoring Was Applied
+
+Clear naming improves code understanding and readability.
+
+Commit Link
+
+https://github.com/justaformality/CSE4642026-arajeshn/commit/4d85c74487b866acec98f5f69e54e454c08e2977
+
+Refactoring 3 – Remove Duplicate Code
+Description
+
+Duplicate BFS and DFS logic was moved into a shared abstract class.
+
+Why This Refactoring Was Applied
+
+This reduces repeated logic and supports better scalability.
+
+Commit Link
+
+https://github.com/justaformality/CSE4642026-arajeshn/commit/224113ef134e4f9ba14e5dc7f02acd03b202f3c4
+
+Refactoring 4 – Simplify Conditional Logic
+Description
+
+Complex conditional logic was simplified into cleaner structures.
+
+Why This Refactoring Was Applied
+
+Simpler logic improves debugging and maintainability.
+
+Commit Link
+
+https://github.com/justaformality/CSE4642026-arajeshn/commit/5a91ed93994edd9b697e58a7e94dd95109cf241e
+
+Refactoring 5 – Improve Class Structure
+Description
+
+Classes were reorganized based on responsibilities.
+
+Why This Refactoring Was Applied
+
+This improves object-oriented design and separation of concerns.
+
+Commit Link
+
+https://github.com/justaformality/CSE4642026-arajeshn/commit/abc533d837532ef0f341ea38fe79748462fed059
+
+Template Pattern Implementation
+Overview
+
+The Template Method design pattern was applied to abstract the common behaviors of BFS and DFS.
+
+An abstract base class named:
+
+GraphSearchTemplate
+
+was created to define the overall search workflow.
+
+The common steps shared by BFS and DFS include:
+
+Initializing the search
+Tracking visited nodes
+Expanding paths
+Checking destination nodes
+Returning the final path
+
+The subclasses implement only the algorithm-specific behavior.
+
+BFS Implementation
+
+The BFS subclass overrides methods related to queue behavior.
+
+Example:
+
+public class BFSStrategy extends GraphSearchTemplate
+
+BFS explores nodes level-by-level using FIFO ordering.
+
+DFS Implementation
+
+The DFS subclass overrides methods related to stack behavior.
+
+Example:
+
+public class DFSStrategy extends GraphSearchTemplate
+
+DFS explores deeply before backtracking using LIFO ordering.
+
+Why Template Pattern Was Used
+
+The Template Pattern was used because BFS and DFS share many common steps but differ in how nodes are selected during traversal.
+
+Using the template pattern helped:
+
+Reduce duplicate code
+Improve maintainability
+Support future algorithms easily
+Keep the design clean and reusable
+Template Pattern Commit Link
+
+https://github.com/justaformality/CSE4642026-arajeshn/commit/552855c77657953aef1d22efc5391346dcf144ab
+
+Strategy Pattern Implementation
+Overview
+
+The Strategy Pattern was applied to dynamically choose which graph search algorithm to run.
+
+The API:
+
+Path GraphSearch(String src, String dst, Algorithm algo)
+
+allows users to select:
+
+BFS
+DFS
+Random Walk
+
+at runtime.
+
+Strategy Classes
+
+The following strategy classes were created:
+
+BFSStrategy
+DFSStrategy
+RandomWalkStrategy
+
+Each class implements its own search behavior.
+
+Why Strategy Pattern Was Used
+
+The Strategy Pattern was used to separate algorithms into independent interchangeable classes.
+
+Benefits include:
+
+Easy algorithm switching
+Better extensibility
+Cleaner code structure
+Improved maintainability
+Strategy Pattern Commit Link
+
+https://github.com/justaformality/CSE4642026-arajeshn/commit/95f00f68895125f49ec1a5fa4cbfb633bce669d0
+
+Random Walk Search Implementation
+Overview
+
+A Random Walk Search algorithm was added using both the Template Pattern and Strategy Pattern.
+
+The algorithm randomly selects neighboring nodes during traversal until the destination is found.
+
+Example Graph Search
+
+Example search:
+
+GraphSearch("a", "c", Algorithm.RANDOM)
+
+The algorithm may generate different traversal outputs each time due to randomness.
+
+Example Output
+Run 1
+visiting Path{nodes=[Node{a}]}
+visiting Path{nodes=[Node{a}, Node{b}]}
+visiting Path{nodes=[Node{a}, Node{b}, Node{c}]}
+Run 2
+visiting Path{nodes=[Node{a}]}
+visiting Path{nodes=[Node{a}, Node{e}]}
+visiting Path{nodes=[Node{a}, Node{e}, Node{g}]}
+visiting Path{nodes=[Node{a}, Node{b}, Node{c}]}
+Why Random Walk Was Added
+
+The Random Walk algorithm demonstrates extensibility of the design patterns and supports randomized traversal behavior.
+
+Random Walk Commit Link
+
+https://github.com/justaformality/CSE4642026-arajeshn/commit/5e5a303fbff2a3eace0b988f011197e5f70a5e12
+
+Pull Request Review Process
+
+A pull request was created for the refactor branch.
+
+The pull request includes:
+
+Refactoring commits
+Design pattern implementation
+Random walk implementation
+Code review comments
+Review responses
+Additional fixes after review
+Pull Request Link
+
+https://github.com/justaformality/CSE4642026-arajeshn/pull/1
+
+Review Comments
+
+At least 5 review comments were added and resolved during the review process.
+
+Screenshots of the review comments and responses are included in this PDF.
+
+Continuous Integration
+
+Github Actions CI was configured to automatically build and test the project.
+
+The workflow successfully verifies:
+
+Maven compilation
+Unit tests
+Merge validation
+
+Screenshots of successful workflow runs are included in this PDF.
+
+How to Build the Project
+Requirements
+Java 21
+Maven
+Build Instructions
+
+Open terminal in the project directory and run:
+
+mvn package
+How to Run the Project
+Run BFS
+java -jar target/YOUR_JAR_NAME.jar bfs
+Run DFS
+java -jar target/YOUR_JAR_NAME.jar dfs
+Run Random Walk
+java -jar target/YOUR_JAR_NAME.jar random
+Example Input Graph
+
+Example DOT input file:
+
+a -> b
+b -> c
+a -> e
+e -> g
+g -> h
+Testing
+
+To run tests:
+
+mvn test
+Expected Outputs
+
+Screenshots of expected outputs for:
+
+BFS
+DFS
+Random Walk
+Github Actions
+Pull Request Reviews
+
+are included in this README PDF.
