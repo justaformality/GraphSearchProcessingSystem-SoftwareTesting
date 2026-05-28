@@ -1,175 +1,275 @@
-# CSE4642026-arajeshn
-CSE 464: Software Quality Assurance and Testing - Course Project Part 1
+# Graph Search and Processing System
 
-**GitHub REPOSITORY**
-https://github.com/justaformality/CSE4642026-arajeshn
+A Java-based graph processing and search framework built for CSE 464 Software Quality Assurance and Testing at Arizona State University.
 
-**AUTHOR:**
-Arshia Rajeshnarayanan
-1225058575
-Arizona State University
-CSE464: Software QA and Testing
+This project implements graph parsing, graph construction, graph visualization, graph search algorithms, software refactoring techniques, and design pattern-based architecture improvements.
 
-**OVERVIEW**
-This project implements a graph processing system in Java that can:
-Feature 1 – Parse a DOT graph file to create a graph
-Feature 2 – Add nodes to a graph
-Feature 3 – Add edges to a graph
-Feature 4 – Output the graph as a DOT file or graphics
+The system supports:
 
-Unit tests were also implemented to validate each feature.
+* DOT graph parsing
+* Graph construction and visualization
+* Breadth First Search (BFS)
+* Depth First Search (DFS)
+* Random Walk Search
+* Unit testing
+* Continuous integration
+* Software refactoring and design patterns
 
-**PROJECT STRUCTURE**
-src
- ├── main
- │   └── java
- │       └── edu/asu/cse464
- │           ├── Edge.java
- │           ├── Graph.java
- │           ├── DotGraphParser.java
- │           ├── GraphFileManager.java
- │           └── Main.java
- │
- └── test
-     └── java
-         └── edu/asu/cse464
-             ├── GraphBasicTest.java
-             ├── DotGraphParserTest.java
-             └── GraphFileManagerTest.java
+---
 
-src/test/resources
- ├── input1.dot
- ├── empty.dot
- └── invalid.dot
+# Project Overview
 
- **ENVIRONMENT SETUP**
- This project requires the following software:
- **Java**
- Java 21 or later
- java - version
+The goal of this project was to build a flexible graph-processing framework while improving software quality through testing, refactoring, and maintainable architecture design.
 
- **Maven**
- mvn -version
+The project evolved across multiple phases:
 
- **Graphviz**
- dot -V
+* Graph parsing and graph generation
+* Unit testing and validation
+* Graph search algorithms
+* Refactoring and design pattern implementation
+* Random Walk search support
+* CI workflow integration
 
- **BUILDING THE PROJECT**
- Navigate to the project root directory.
- cd CSE4642026-arajeshn
+---
 
- Build the project using Maven.
-** mvn package**
+# Features
 
-<img width="890" height="695" alt="Screenshot 2026-03-06 at 10 37 48 PM" src="https://github.com/user-attachments/assets/8ec77e21-5ee0-4599-b2df-eae1e313d875" />
+## Graph Processing
 
- if successful, Maven will produce a compiled JAR file in 
- target/
+* Parse DOT graph files
+* Create graph structures dynamically
+* Add nodes and edges
+* Export graphs as DOT files
+* Generate graph visualizations using Graphviz
 
-**RUNNING THE PROGRAM**
+## Graph Search Algorithms
 
-Run the program using:
+* Breadth First Search (BFS)
+* Depth First Search (DFS)
+* Random Walk Search
 
-**java -cp target/CSE4642026-arajeshn-1.0-SNAPSHOT.jar edu.asu.cse464.Main**
+## Software Engineering Features
+
+* Refactoring improvements
+* Template Method design pattern
+* Strategy design pattern
+* Modular architecture
+* Continuous integration workflow
+* Automated unit testing
+
+---
+
+# Tech Stack
+
+* Java 21
+* Maven
+* JUnit
+* Graphviz
+* GitHub Actions
+* Object-Oriented Programming
+
+---
+
+# Design Patterns Used
+
+## Template Method Pattern
+
+The graph search workflow was refactored into a reusable abstract search template to reduce duplicated logic between BFS and DFS.
+
+This improved:
+
+* code reuse
+* maintainability
+* scalability
+
+## Strategy Pattern
+
+Different graph search strategies were implemented as interchangeable components.
+
+Supported strategies:
+
+* BFS Strategy
+* DFS Strategy
+* Random Walk Strategy
+
+This made the search system more modular and extensible.
+
+---
+
+# Project Structure
+
+```text
+src/
+├── main/
+│   └── java/
+│       └── edu/asu/cse464/
+│           ├── Edge.java
+│           ├── Graph.java
+│           ├── DotGraphParser.java
+│           ├── GraphFileManager.java
+│           ├── GraphSearchTemplate.java
+│           ├── BFSStrategy.java
+│           ├── DFSStrategy.java
+│           ├── RandomWalkStrategy.java
+│           ├── Path.java
+│           └── Main.java
+│
+└── test/
+    └── java/
+        └── edu/asu/cse464/
+            ├── GraphBasicTest.java
+            ├── DotGraphParserTest.java
+            ├── GraphFileManagerTest.java
+            └── GraphFeatureTests.java
+
+src/test/resources/
+├── input.dot
+├── empty.dot
+└── invalid.dot
+```
+
+---
+
+# Setup
+
+## Requirements
+
+* Java 21 or later
+* Maven
+* Graphviz
+
+Check installations:
+
+```bash
+java -version
+mvn -version
+dot -V
+```
+
+---
+
+# Build the Project
+
+From the project root:
+
+```bash
+mvn clean package
+```
+
+If successful, Maven generates the compiled JAR file inside:
+
+```text
+target/
+```
+
+---
+
+# Run the Program
+
+Run the application using:
+
+```bash
+java -cp target/classes edu.asu.cse464.Main
+```
 
 The program will:
+
 1. Parse a DOT graph file
-2. Construct a graph object
-3. Output graph information
-4. Generate a DOT file
-5. Generate a PNG visualization
+2. Construct the graph object
+3. Run graph search algorithms
+4. Output graph information
+5. Generate DOT output
+6. Generate graph visualizations
 
-**FEATURE 1 PARSE DOT GRAPH**
+---
 
-<img width="965" height="188" alt="Screenshot 2026-03-06 at 10 39 19 PM" src="https://github.com/user-attachments/assets/28ece3ab-c171-4641-9ef4-be244c90d037" />
+# Example Algorithms
 
-parseGraph(String filepath)
-This method reads a DOT file and creates a directed graph
+## Breadth First Search (BFS)
 
-**Example Input**
-digraph {
-a -> b
-b -> c
-c -> d
-}
+Explores neighboring nodes level by level.
 
-The graph structure is printed using:
-toString()
+## Depth First Search (DFS)
 
-**Example Output**
-Nodes: a, b, c, d
-Edges:
-a -> b
-b -> c
-c -> d
+Explores graph paths deeply before backtracking.
 
+## Random Walk Search
 
-**FEATURE 2 ADDING NODES**
+Traverses the graph by randomly selecting neighboring nodes at each step.
 
-addNodes(String label)
-addNodes(String[] label)
-These APIs allow nodes to be added to the graph while checking for duplicate labels.
+---
 
-**Example**
-graph.addNode("x");
-graph.addNodes(new String[]{"y", "z"});
+# Testing
 
-**FEATURE 3 ADDING EDGES**
-addEdge(String srcLabel, String dstLabel)
-This method adds an edge between two nodes and prevents duplicate edges.
+The project includes automated unit tests for:
 
-**Example**
-graph.addEdge("a", "b")
+* graph parsing
+* graph creation
+* graph output generation
+* BFS traversal
+* DFS traversal
+* Random Walk functionality
+* invalid input handling
 
+Run tests with:
 
+```bash
+mvn test
+```
 
-**FEATURE 4 OUTPUT GRAPH**
-outputDOTGraph(String path)
-outputGraphics(String path, String format)
-the first method outputs the graph in DOT format.
-the second method generates a graphical representation using Graphviz
+---
 
-DOT File Output
-<img width="602" height="123" alt="Screenshot 2026-03-06 at 10 40 55 PM" src="https://github.com/user-attachments/assets/774c5771-a7ed-42e2-99d0-a5e3bc8d862e" />
+# Continuous Integration
 
-Graph Visualization
-<img width="709" height="300" alt="Screenshot 2026-03-06 at 10 42 01 PM" src="https://github.com/user-attachments/assets/ebc393e7-fd61-49b2-ba2a-3deaadd2bcb3" />
+The project includes a GitHub Actions CI workflow that automatically:
 
-**UNIT TESTS**
-JUnit tests were written for each feature.
+* builds the project
+* runs tests
+* validates Maven compilation
 
-Test classes:
-GraphBasicTest.java
-DotGraphParserTest.java
-GraphFileManagerTest.java
+on every push and pull request.
 
-Run tests using:
-**mvn test**
+---
 
+# Refactoring Improvements
 
-<img width="1256" height="828" alt="Screenshot 2026-04-03 at 5 10 39 PM" src="https://github.com/user-attachments/assets/8a17dfb0-4233-4dd2-b714-2e334d1af6de" />
+Several refactoring techniques were applied throughout the project, including:
 
-**PROJECT PART 2**
-This phase extends the graph system with additional functionality:
+* Extract Method
+* Rename Method and Variables
+* Remove Duplicate Code
+* Introduce Abstract Search Template
+* Improve Search Strategy Separation
 
-Feature 5 – Remove nodes and edges  
-Feature 6 – Graph search using BFS  
-Feature 7 – Graph search using DFS  
-Feature 8 – Merge conflict resolution using Algorithm enum  
-Feature 9 – Continuous Integration using GitHub Actions  
+These refactorings improved:
 
-All features are tested using JUnit and integrated into a CI workflow.
+* readability
+* maintainability
+* code reuse
+* extensibility
 
-**MAIN PROGRAM OUTPUT**
-The Main.java class has been updated to demonstrate all features from Project Part 1 and Project Part 2.
+---
 
-Please run the project using:
-**mvn test**
-**mvn package**
-**java -cp target/CSE4642026-arajeshn-1.0-SNAPSHOT.jar edu.asu.cse464.Main**
+# What I Learned
 
-Output Screenshots:
-<img width="1132" height="749" alt="Screenshot 2026-04-03 at 5 09 37 PM" src="https://github.com/user-attachments/assets/9ea3f9ac-87eb-4763-94c6-8f91435f018a" />
-<img width="672" height="420" alt="Screenshot 2026-04-03 at 5 10 00 PM" src="https://github.com/user-attachments/assets/4526f29b-3b26-4673-81c0-c6aeedc90f6a" />
+This project helped me gain experience with:
 
+* graph algorithms
+* software architecture
+* object-oriented design
+* design patterns
+* software refactoring
+* unit testing
+* CI workflows
+* modular Java development
+* Maven project management
 
+It also helped me better understand how software quality practices can improve maintainability and scalability in larger systems.
+
+---
+
+# Author
+
+Arshia Rajeshnarayanan
+Arizona State University
+CSE 464 – Software Quality Assurance and Testing
