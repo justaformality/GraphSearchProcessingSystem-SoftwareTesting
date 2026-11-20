@@ -1,6 +1,8 @@
 # Graph Search and Processing System
 
-A Java-based graph processing and search framework built for CSE 464 Software Quality Assurance and Testing at Arizona State University.
+[![Java CI](https://github.com/justaformality/GraphSearchProcessingSystem-SoftwareTesting/actions/workflows/ci.yml/badge.svg)](https://github.com/justaformality/GraphSearchProcessingSystem-SoftwareTesting/actions/workflows/ci.yml)
+
+A Java framework that parses Graphviz DOT files into a graph model, searches it with interchangeable BFS, DFS, and Random Walk strategies, and exports the result back to DOT and PNG. It is built around the Strategy and Template Method patterns and covered by JUnit 5 tests that run in GitHub Actions CI.
 
 This project implements graph parsing, graph construction, graph visualization, graph search algorithms, software refactoring techniques, and design pattern-based architecture improvements.
 
@@ -18,6 +20,8 @@ The system supports:
 ---
 
 # Project Overview
+
+This project was built for CSE 464 Software Quality Assurance and Testing at Arizona State University.
 
 The goal of this project was to build a flexible graph-processing framework while improving software quality through testing, refactoring, and maintainable architecture design.
 
@@ -61,9 +65,9 @@ The project evolved across multiple phases:
 
 # Tech Stack
 
-* Java 21
+* Java 11+
 * Maven
-* JUnit
+* JUnit 5
 * Graphviz
 * GitHub Actions
 * Object-Oriented Programming
@@ -103,29 +107,35 @@ src/
 ├── main/
 │   └── java/
 │       └── edu/asu/cse464/
+│           ├── Graph.java                       # graph model + GraphSearch entry point
+│           ├── Node.java
 │           ├── Edge.java
-│           ├── Graph.java
-│           ├── DotGraphParser.java
-│           ├── GraphFileManager.java
-│           ├── GraphSearchTemplate.java
-│           ├── BFSStrategy.java
-│           ├── DFSStrategy.java
-│           ├── RandomWalkStrategy.java
 │           ├── Path.java
+│           ├── DotGraphParser.java              # DOT file -> Graph
+│           ├── GraphFileManager.java            # Graph -> summary / DOT / PNG
+│           ├── Algorithm.java                   # BFS, DFS, RANDOM_WALK
+│           ├── GraphSearchStrategy.java         # Strategy interface
+│           ├── GraphSearchStrategyFactory.java  # Algorithm -> strategy
+│           ├── GraphSearchAbstract.java         # Template Method base for searches
+│           ├── BFS.java
+│           ├── DFS.java
+│           ├── RandomWalk.java
 │           └── Main.java
 │
 └── test/
-    └── java/
-        └── edu/asu/cse464/
-            ├── GraphBasicTest.java
-            ├── DotGraphParserTest.java
-            ├── GraphFileManagerTest.java
-            └── GraphFeatureTests.java
-
-src/test/resources/
-├── input.dot
-├── empty.dot
-└── invalid.dot
+    ├── java/
+    │   └── edu/asu/cse464/
+    │       ├── GraphBasicTest.java
+    │       ├── DotGraphParserTest.java
+    │       ├── GraphFileManagerTest.java
+    │       ├── GraphSearchBFSTest.java
+    │       ├── GraphSearchDFSTest.java
+    │       └── GraphSearchMergedTest.java
+    └── resources/
+        ├── input.dot
+        ├── input1.dot
+        ├── empty.dot
+        └── invalid.dot
 ```
 
 ---
@@ -134,9 +144,9 @@ src/test/resources/
 
 ## Requirements
 
-* Java 21 or later
+* Java 11 or later (the project compiles to Java 11, and CI runs on JDK 11)
 * Maven
-* Graphviz
+* Graphviz (the `dot` command is used to render PNGs)
 
 Check installations:
 
@@ -156,21 +166,19 @@ From the project root:
 mvn clean package
 ```
 
-If successful, Maven generates the compiled JAR file inside:
-
-```text
-target/
-```
+This compiles the code into `target/classes/` and runs the full test suite. It also produces a JAR in `target/`, but that JAR has no `Main-Class` entry, so run the program from the compiled classes as shown below.
 
 ---
 
 # Run the Program
 
-Run the application using:
+From the project root (the program reads `src/test/resources/input.dot` relative to the current directory):
 
 ```bash
 java -cp target/classes edu.asu.cse464.Main
 ```
+
+It writes `graph_summary.txt`, `graph_output.dot`, and `graph_output.png` to the project root. All three are gitignored.
 
 The program will:
 
@@ -221,13 +229,13 @@ mvn test
 
 # Continuous Integration
 
-The project includes a GitHub Actions CI workflow that automatically:
+The project includes a GitHub Actions CI workflow ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)). On pushes to `main` and on pull requests into `main`, it sets up JDK 11 and Graphviz on Ubuntu, then runs `mvn package`, which:
 
 * builds the project
 * runs tests
 * validates Maven compilation
 
-on every push and pull request.
+The badge at the top of this README shows the latest result.
 
 ---
 
